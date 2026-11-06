@@ -1,5 +1,5 @@
 // this is a temporary file that needs to be merged with other implementations of the final header file
-
+#include <unistd.h>
 // NODE structure
 typedef struct s_node
 {
