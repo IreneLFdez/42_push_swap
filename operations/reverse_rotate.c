@@ -6,11 +6,11 @@
 /*   By: ilopez-f <ilopez-f@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/06 13:04:00 by ilopez-f          #+#    #+#             */
-/*   Updated: 2026/11/06 13:22:43 by ilopez-f         ###   ########.fr       */
+/*   Updated: 2026/11/14 16:26:33 by ilopez-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../push_swap.h"
 
 /// @brief Rota los nodos de la pila, de forma que el último pasa a
 ///			ser el primero.
@@ -34,26 +34,30 @@ void	reverse_rotate(t_stack *stack)
 
 /// @brief Rota la pila a.
 /// @param a Pila que se rota.
-void	rra(t_stack *a)
+void	rra(t_stack *a, t_options options)
 {
 	reverse_rotate(a);
-	write(1, "rra\n", 4);
+	if (options.bench == 0)
+		write(1, "rra\n", 4);
 }
 
 /// @brief Rota la pila b.
 /// @param b Pila que se rota.
-void	rrb(t_stack *b)
+void	rrb(t_stack *b, t_options options)
 {
 	reverse_rotate(b);
-	write(1, "rrb\n", 4);
+	if (options.bench == 0)
+		write(1, "rrb\n", 4);
 }
 
 /// @brief rota dos pilas.
 /// @param a Primera pila que se rota.
 /// @param b Segunda pila que se nota.
-void	rrr(t_stack *a, t_stack *b)
+void	rrr(t_stack *a, t_stack *b, t_options options)
 {
-	rra(a);
-	rrb(b);
+	if (options.bench == 0)
+		options.bench = 1;
+	rra(a, options);
+	rrb(b, options);
 	write(1, "rrr\n", 4);
 }

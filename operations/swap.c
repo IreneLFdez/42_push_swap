@@ -6,11 +6,11 @@
 /*   By: ilopez-f <ilopez-f@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 13:07:24 by ilopez-f          #+#    #+#             */
-/*   Updated: 2026/11/06 13:19:16 by ilopez-f         ###   ########.fr       */
+/*   Updated: 2026/11/14 16:39:06 by ilopez-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../push_swap.h"
 
 /// @brief función principal swap. Intercambia los dos primeros
 ///			nodos de una pila.
@@ -25,38 +25,44 @@ void	swap(t_stack *stack)
 	first = stack->top;
 	second = first->next;
 	first->next = second->next;
-	first->prev = second;
+	if (first->next)
+		first->next->prev = first;
+	else
+		stack->bottom = first;
 	second->next = first;
 	second->prev = NULL;
-	if (second->next)
-		second->next->prev = first;
+	first->prev = second;
 	stack->top = second;
 }
 
 /// @brief Wrapper para la pila a.
 /// @sa swap();
 /// @param a Puntero a la pila a que se desea modificar.
-void	sa(t_stack *a)
+void	sa(t_stack *a, t_options options)
 {
 	swap(a);
-	write(1, "sa\n", 3);
+	if (options.bench == 0)
+		write(1, "sa\n", 3);
 }
 
 /// @brief Wrapper para la pila b.
 /// @sa swap();
 /// @param b Puntero a la pila b que se desea modificar.
-void	sb(t_stack *b)
+void	sb(t_stack *b, t_options options)
 {
 	swap(b);
-	write(1, "sb\n", 3);
+	if (options.bench == 0)
+		write(1, "sb\n", 3);
 }
 
 /// @brief Intercambia los dos primeros nodos de dos pilas.
 /// @param a Primera pila cuyos nodos se intercambian.
 /// @param b Segunda pila cuyos nodos se intercambian.
-void	ss(t_stack *a, t_stack *b)
+void	ss(t_stack *a, t_stack *b, t_options options)
 {
-	sa(a);
-	sb(b);
+	if (options.bench == 0)
+	options.bench = 1;
+	sa(a, options);
+	sb(b, options);
 	write(1, "ss\n", 3);
 }

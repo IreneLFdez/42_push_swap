@@ -6,11 +6,11 @@
 /*   By: ilopez-f <ilopez-f@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 13:25:26 by ilopez-f          #+#    #+#             */
-/*   Updated: 2026/11/06 13:20:32 by ilopez-f         ###   ########.fr       */
+/*   Updated: 2026/11/14 16:25:10 by ilopez-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../push_swap.h"
 
 /// @brief Mueve el primer nodo de una lista al inicio de otra.
 /// @param dest Puntero a la pila de destino.
@@ -41,17 +41,19 @@ void	push(t_stack *dest, t_stack *src)
 /// @brief Mueve el primer nodo de b a a.
 /// @param a lista a.
 /// @param b lista b.
-void	pa(t_stack *a, t_stack *b)
+void	pa(t_stack *a, t_stack *b, t_options options)
 {
 	push(a, b);
-	write(1, "pa\n", 3);
+	if (options.bench == 0)
+		write(1, "pa\n", 3);
 }
 
 /// @brief Mueve el primer nodo de a a b.
 /// @param a lista a.
 /// @param b lista b.
-void	pb(t_stack *a, t_stack *b)
+void	pb(t_stack *a, t_stack *b, t_options options)
 {
 	push(b, a);
-	write(1, "pb\n", 3);
+	if (options.bench == 0)
+		write(1, "pb\n", 3);
 }
