@@ -1,42 +1,50 @@
 NAME	:= push_swap
 
-CC		:= cc
-CFLAGS	:= -Wall -Wextra -Werror
-AR		:= ar
-ARFLAGS	:= rcs
+CC			:= cc
+CFLAGS		:= -Wall -Wextra -Werror
+INCLUDES	:= -Iinclude -Ilibft
 
-LIBFT	:= libft/libft.a
+LIBFT		:= libft/libft.a
 
-SRCS	:=	main.c									\
-			parser/parser.c							\
-			errors/error_handler.c					\
-			utils/utils.c							\
-			sort_strategies/simple_sort.c			\
-			operations/push.c						\
-			operations/reverse_rotate.c				\
-			operations/rotate.c						\
-			operations/swap.c
+SRC_DIR		:= src
+TEST_DIR	:= tests
 
-OBJS	:= $(SRCS:.c=.o)
+SRCS		:=	$(SRC_DIR)/main.c						\
+				$(SRC_DIR)/parser/parser.c				\
+				$(SRC_DIR)/errors/error_handler.c		\
+				$(SRC_DIR)/utils/utils.c				\
+				$(SRC_DIR)/utils/stack_utils.c			\
+				$(SRC_DIR)/utils/bench.c				\
+				$(SRC_DIR)/sorting/simple_sort.c		\
+				$(SRC_DIR)/sorting/medium_sort.c		\
+				$(SRC_DIR)/sorting/complex_sort.c		\
+				$(SRC_DIR)/operations/push.c			\
+				$(SRC_DIR)/operations/reverse_rotate.c	\
+				$(SRC_DIR)/operations/rotate.c			\
+				$(SRC_DIR)/operations/swap.c
+
+OBJS		:= $(SRCS:.c=.o)
+
+TESTS		:= test_parser test_utils test_bench test_stack
 
 all : $(NAME)
 
 $(NAME) : $(OBJS) $(LIBFT)
-	$(AR) $(ARFLAGS) $(NAME) $(OBJS) -o $(NAME)
-	$(AR) $(ARFLAGS) $(NAME) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
 	make -C libft
 
-%.o : %.c push_swap.h
-	$(CC) $(CFLAGS) -I. -c $< -o $@
+%.o : %.c include/push_swap.h libft/libft.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean :
 	rm -f $(OBJS)
 	make -C libft clean
 
 fclean : clean
-	rm -f $(NAME) parser_tester utils_tester bench_tester
+	rm -f $(NAME)
+	rm -f parser_tester utils_tester bench_tester stack_tester
 	make -C libft fclean
 
 re: fclean all
@@ -44,17 +52,23 @@ re: fclean all
 bonus: all
 	# rule for executing bonus files
 
-### Tester execution ###
+.PHONY: all clean fclean re bonus test
 
-parser_tester: tester/parser_tester.c parser/parser.c utils/utils.c $(LIBFT)
-	$(CC) $(CFLAGS) $(INCLUDES) tester/parser_tester.c parser/parser.c utils/utils.c $(LIBFT) -o parser_tester
+#	================
+#	Tester execution
+#	================
 
-utils_tester: tester/utils_tester.c utils/utils.c $(LIBFT)
-	$(CC) $(CFLAGS) $(INCLUDES) tester/utils_tester.c utils/utils.c $(LIBFT) -o utils_tester
+parser_tester: $(TEST_DIR)/parser_tester.c $(SRC_DIR)/parser/parser.c $(SRC_DIR)/utils/utils.c $(SRC_DIR)/utils/clean.c $(SRC_DIR)/errors/error_handler.c $(LIBFT)
+	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@
 
-bench_tester: tester/bench_tester.c print/bench.c $(LIBFT)
-	$(CC) $(CFLAGS) $(INCLUDES) tester/bench_tester.c print/bench.c $(LIBFT) -o bench_tester
+utils_tester: $(TEST_DIR)/utils_tester.c $(SRC_DIR)/utils/utils.c $(LIBFT)
+	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@
 
+bench_tester: $(TEST_DIR)/bench_tester.c $(SRC_DIR)/utils/bench.c $(LIBFT)
+	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@
+
+stack_tester: $(TEST_DIR)/stack_tester.c $(SRC_DIR)/utils/stack.c $(SRC_DIR)/utils/utils.c $(SRC_DIR)/utils/clean.c $(SRC_DIR)/parser/parser.c $(SRC_DIR)/errors/error_handler.c $(LIBFT)
+	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@
 
 test_parser: parser_tester
 	./parser_tester
@@ -65,8 +79,7 @@ test_utils: utils_tester
 test_bench: bench_tester
 	./bench_tester
 
-test: test_parser test_utils test_bench
+test_stack: stack_tester
+	./stack_tester
 
-
-
-.PHONY: all clean fclean re bonus test
+test: $(TESTS)

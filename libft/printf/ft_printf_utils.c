@@ -6,7 +6,7 @@
 /*   By: ilopez-f <ilopez-f@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/26 15:54:58 by ilopez-f          #+#    #+#             */
-/*   Updated: 2026/11/14 15:31:49 by ilopez-f         ###   ########.fr       */
+/*   Updated: 2026/11/16 12:08:18 by ilopez-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	ft_putnbr_count(int nb)
 	write(1, &n, 1);
 	return (len);
 }
-
 
 int	ft_putnbr_base_count(unsigned long long nbr, char *base)
 {
